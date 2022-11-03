@@ -1,8 +1,40 @@
 import {tweetsData} from "./data.js"
 import {saveLocalStorage, readLocalStorage, getData} from "./utils.js"
+import { v4 as uuidv4 } from "https://jspm.dev/uuid";
 
 
-const twimbaFeed =  getData(tweetsData)
+let twimbaFeed =  getData(tweetsData)
+
+document.addEventListener('click', function(e) {
+  if(e.target.id === 'twittear-btn') {
+    newTweet()
+  }
+  if(e.target.dataset.replies) {
+    console.log(e.target.dataset.replies)
+  }
+})
+
+function newTweet(){
+  const twittearInput = document.querySelector('#twittear-input')
+  if(twittearInput.value) {
+    const newTweetObj = {
+      handle: `@bubulazi 👩🏻‍🎤`,
+      profilePic: `image/popo.jpg`,
+      likes: 0,
+      retweets: 0,
+      tweetText: `${twittearInput.value}`,
+      replies: [],
+      isLiked: false,
+      isRetweeted: false,
+      uuid: uuidv4(),
+  }
+  twittearInput.value = ''
+  twimbaFeed.unshift(newTweetObj)
+  saveLocalStorage(twimbaFeed)
+  twimbaFeed = readLocalStorage()
+  renderHTML()
+  }
+}
 
 
 function generarHtml() {
@@ -32,10 +64,10 @@ function generarHtml() {
       <p class="tweet-usuario">${tweet.handle}</p>
       <p>${tweet.tweetText}</p>
       <div class="tweet-interacciones">
-        <span class="tweet-interaccion" ><i class="fa-regular fa-comment-dots"></i>2</span>
-        <span class="tweet-interaccion" ><i class="fa-regular fa-heart"></i>22</span>
-        <span class="tweet-interaccion" ><i class="fa-solid fa-retweet"></i>222</span>
-        <span class="tweet-interaccion" ><i class="fa-regular fa-reply"></i></span>
+        <span class="tweet-interaccion" ><i data-replies="${tweet.uuid}" class="fa-regular fa-comment-dots"></i> ${tweet.replies.length} </span>
+        <span class="tweet-interaccion" ><i data-likes="${tweet.uuid}" class="fa-regular fa-heart"></i> ${tweet.likes.length}</span>
+        <span class="tweet-interaccion" ><i data-retweets="${tweet.uuid}" class="fa-solid fa-retweet"></i> ${tweet.retweets.length}</span>
+        <span class="tweet-interaccion" ><i data-reply-tweet="${tweet.uuid}"  class="fa-regular fa-reply"></i></span>
       </div>
       ${replyHtml}
     </div>
@@ -51,3 +83,40 @@ function renderHTML() {
 
 renderHTML()
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// document.addEventListener('click', function(e){
+//   if(e.target.dataset.like){
+//      handleLikeClick(e.target.dataset.like) 
+//   }
+//   else if(e.target.dataset.retweet){
+//       handleRetweetClick(e.target.dataset.retweet)
+//   }
+//   else if(e.target.dataset.reply){
+//       handleReplyClick(e.target.dataset.reply)
+//   }
+//   else if(e.target.id === 'tweet-btn'){
+//       handleTweetBtnClick()
+//   }
+// })
