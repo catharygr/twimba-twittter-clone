@@ -109,3 +109,9 @@ i {
   cursor: pointer;
 }
 
+
+ .ocultar-respuesta {
+  display: none;
+
+} 
+ 

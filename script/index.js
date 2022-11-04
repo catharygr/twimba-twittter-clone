@@ -10,9 +10,33 @@ document.addEventListener('click', function(e) {
     newTweet()
   }
   if(e.target.dataset.replies) {
-    console.log(e.target.dataset.replies)
+    manejarRespuestas(e.target.dataset.replies)
+  }
+  if(e.target.dataset.likes) {
+    manejarlikes(e.target.dataset.likes)
+  }
+  if(e.target.dataset.retweets) {
+    manejarRetweets(e.target.dataset.retweets)
   }
 })
+
+function manejarRespuestas(tweetUuid) {
+    document.querySelector(`#tweet-replies-${tweetUuid}`).classList.toggle('ocultar-respuesta')
+}
+
+function manejarlikes(tweetUuid){
+  const tweetEncontrado = twimbaFeed.find(tweet => tweet.uuid === tweetUuid)
+  tweetEncontrado.isLiked ? tweetEncontrado.likes-- : tweetEncontrado.likes++
+  tweetEncontrado.isLiked = !tweetEncontrado.isLiked
+  renderHTML()
+}
+
+function manejarRetweets(tweetUuid) {
+  const tweetRetituado = twimbaFeed.find(tweet => tweet.uuid === tweetUuid)
+  tweetRetituado.isRetweeted ? tweetRetituado.retweets-- : tweetRetituado.retweets++
+  tweetRetituado.isRetweeted = !tweetRetituado.isRetweeted
+  renderHTML()
+}
 
 function newTweet(){
   const twittearInput = document.querySelector('#twittear-input')
@@ -40,36 +64,48 @@ function newTweet(){
 function generarHtml() {
   let html = ''
   twimbaFeed.forEach(tweet => {
-    let replyHtml = ''
+    let likesColor = ''
+    if(tweet.isLiked) {likesColor = 'red'}
+    let retweetsColor = ''
+    if(tweet.isRetweeted) {retweetsColor = 'limegreen'}
 
+
+
+
+
+
+    let replyHtml = ''
     if(tweet.replies.length > 0) {
       tweet.replies.forEach(reply => {
         replyHtml += `
-        <div class="tweet-reply">
         <div class="tweet">
-          <img src="${reply.profilePic}" alt="avatar" class="avatar">
+          <img src="${reply.profilePic}" alt="Avatar" class="avatar">
           <div class="tweet-contenido">
             <p class="tweet-usuario">${reply.handle}</p>
             <p>${reply.tweetText}</p>
           </div>
         </div>
-      </div>
         `
       })
     }
+
     html += `
     <section class="tweet">
-    <img class="avatar" src="${tweet.profilePic}" alt="Avatar">
-    <div class="tweet-contenido">
-      <p class="tweet-usuario">${tweet.handle}</p>
-      <p>${tweet.tweetText}</p>
-      <div class="tweet-interacciones">
-        <span class="tweet-interaccion" ><i data-replies="${tweet.uuid}" class="fa-regular fa-comment-dots"></i> ${tweet.replies.length} </span>
-        <span class="tweet-interaccion" ><i data-likes="${tweet.uuid}" class="fa-regular fa-heart"></i> ${tweet.likes.length}</span>
-        <span class="tweet-interaccion" ><i data-retweets="${tweet.uuid}" class="fa-solid fa-retweet"></i> ${tweet.retweets.length}</span>
-        <span class="tweet-interaccion" ><i data-reply-tweet="${tweet.uuid}"  class="fa-regular fa-reply"></i></span>
-      </div>
+      <img src="${tweet.profilePic}" alt="Avatar" class="avatar">
+        <div class="tweet-contenido">
+        <p class="tweet-usuario">${tweet.handle}</p>
+        <p>${tweet.tweetText}</p>
+        <div class="tweet-interacciones">
+          <span class="tweet-interaccion"><i data-replies="${tweet.uuid}" class="fa-regular fa-comment-dots"></i> ${tweet.replies.length}</span>
+          <span class="tweet-interaccion"><i style="color: ${likesColor}" data-likes="${tweet.uuid}" class="fa-solid fa-heart"></i> ${tweet.likes}</span>
+          <span class="tweet-interaccion"><i style="color:${retweetsColor}" data-retweets="${tweet.uuid}" class="fa-solid fa-retweet"></i> ${tweet.retweets}</span>
+          <span class="tweet-interaccion"><i data-reply-tweet="${tweet.uuid}" class="fa-regular fa-reply"></i></span>
+        </div>
+
+     <div class="ocultar-respuesta" id="tweet-replies-${tweet.uuid}">
       ${replyHtml}
+    </div>
+    
     </div>
   </section>
     `
