@@ -68,7 +68,7 @@ h1 {
   font-size: 20px;
   width: 100%;
   font-family: inherit;
-  
+
 }
 
 /* Sección tweet-feed */
@@ -114,4 +114,25 @@ i {
   display: none;
 
 } 
+
+/* Reply bloque */
+
+.reply-bloque {
+  border-top: 1px solid #999;
+  padding-top: 15px;
+}
+
+.reply-btn {
+  margin-top: 5px;
+  padding: 10px 20px;
+  font-size: 15px;
+  grid-column: 2 / 3;
+} 
+
+.reply-input {
+  font-size: initial;
+}
  
+.ocultar-reply-bloque {
+  display: block;
+}
