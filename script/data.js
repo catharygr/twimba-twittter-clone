@@ -1,11 +1,10 @@
 export const tweetsData = [   
   {
-      handle: `@claumanga ☣️`,
+      handle: `@erythchi ☣️`,
       profilePic: `image/clau.jpg`,
       likes: 27,
       retweets: 10,
-      tweetText: `Buy Bitcoin, ETH Make 💰💰💰 low low prices. 
-          Guaranteed return on investment. HMU DMs open!!`,
+      tweetText: `Compraré muchos Bitcoin💰💰💰 para comprar todos los cosplay que me gustan`,
       replies: [],
       isLiked: false,
       isRetweeted: false,
@@ -20,8 +19,8 @@ export const tweetsData = [
       tweetText: `I need volunteers for a one-way mission to Mars 🪐. No experience necessary🚀`,
       replies: [
                 {
-              handle: `@zorkasarajevo 😎`,
-              profilePic: `image/zorka.jpg`,
+              handle: `@xilerth 😎`,
+              profilePic: `image/luis.jpg`,
               tweetText: `Yes! Sign me up! 😎🛩`,
           },
                 {
@@ -36,14 +35,14 @@ export const tweetsData = [
       uuid: '3c23454ee-c0f5-9g9g-9c4b-77835tgs2',
   },
       {
-      handle: `@zorkasarajevo 😎`,
-      profilePic: `image/zorka.jpg`,
+      handle: `@xilerth 😎`,
+      profilePic: `image/luis.jpg`,
       likes: 10,
       retweets: 3,
-      tweetText: `Are you a coder if you only know HTML?`,
+      tweetText: `Are you a coder if you only know AngularJS?`,
       replies: [
           {
-              handle: `@claumanga ☣️`,
+              handle: `@erythchi ☣️`,
               profilePic: `image/clau.jpg`,
               tweetText: `No. Obviosuly not. Go get a job in McDonald's.`,
           },
