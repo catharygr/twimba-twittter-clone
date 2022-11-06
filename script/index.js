@@ -1,8 +1,13 @@
 import { tweetsData } from "./data.js";
-import { saveLocalStorage, readLocalStorage, getData } from "./utils.js";
+import { saveLocalStorage, readLocalStorage, getData, } from "./utils.js";
 import { v4 as uuidv4 } from "https://jspm.dev/uuid";
 
 let twimbaFeed = getData(tweetsData);
+
+function localStorage() {
+  saveLocalStorage(twimbaFeed);
+  twimbaFeed = readLocalStorage();
+}
 
 document.addEventListener("click", function (e) {
   if (e.target.id === "twittear-btn") {
@@ -23,6 +28,10 @@ document.addEventListener("click", function (e) {
   if (e.target.dataset.replybtn) {
     newreply(e.target.dataset.replybtn);
   }
+  if(e.target.dataset.delete) {
+    deleteTweet(e.target.dataset.delete)
+  }
+
 });
 
 function manejarRespuestas(tweetUuid) {
@@ -65,6 +74,14 @@ function abrirReplyBloque(tweetUuid) {
   }
 }
 
+function deleteTweet(tweetUuid) {
+  const tweetEncontrado = twimbaFeed.findIndex((tweet) => tweet.uuid === tweetUuid);
+  twimbaFeed.splice(tweetEncontrado, 1)
+  console.log(tweetEncontrado)
+  localStorage()
+  renderHTML();
+}
+
 function newreply(tweetUuid) {
   const textInput = document.querySelector(`#reply-input-${tweetUuid}`);
   const tweetEncontrado = twimbaFeed.find((tweet) => tweet.uuid === tweetUuid);
@@ -74,8 +91,7 @@ function newreply(tweetUuid) {
     tweetText: textInput.value,
   });
   tweetEncontrado.isReplyVisible = false;
-  saveLocalStorage(twimbaFeed);
-  twimbaFeed = readLocalStorage();
+  localStorage()
   renderHTML();
 }
 
@@ -92,12 +108,12 @@ function newTweet() {
       isLiked: false,
       isRetweeted: false,
       isReplyVisible: false,
+      canDelete: true,
       uuid: uuidv4(),
     };
     twittearInput.value = "";
     twimbaFeed.unshift(newTweetObj);
-    saveLocalStorage(twimbaFeed);
-    twimbaFeed = readLocalStorage();
+    localStorage()
     renderHTML();
   }
 }
@@ -113,6 +129,8 @@ function generarHtml() {
     if (tweet.isRetweeted) {
       retweetsColor = "limegreen";
     }
+
+    const deleteIcon = `<i data-delete="${tweet.uuid}" class="fa-solid fa-trash"></i>`
 
     let replyHtml = "";
     if (tweet.replies.length > 0) {
@@ -140,6 +158,7 @@ function generarHtml() {
           <span class="tweet-interaccion"><i style="color: ${likesColor}" data-likes="${tweet.uuid}" class="fa-solid fa-heart"></i> ${tweet.likes}</span>
           <span class="tweet-interaccion"><i style="color:${retweetsColor}" data-retweets="${tweet.uuid}" class="fa-solid fa-retweet"></i> ${tweet.retweets}</span>
           <span class="tweet-interaccion"><i data-replytweet="${tweet.uuid}" class="fa-regular fa-reply"></i></span>
+          <span class="tweet-interaccion">${tweet.canDelete ? deleteIcon : ""}</span>
         </div>
 
         <div class="ocultar-reply-bloque" id="reply-bloque-${tweet.uuid}">

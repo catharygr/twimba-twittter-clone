@@ -16,5 +16,6 @@ export function getData(data) {
     // console.log('false')
     return readLocalStorage()
   }
-
+  
 }
+

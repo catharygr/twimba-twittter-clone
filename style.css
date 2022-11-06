@@ -94,12 +94,28 @@ main {
 
 .tweet-interacciones {
   display: flex;
-  gap: 5px;
+  gap: 8px;
 }
 
 .tweet-interaccion {
   width: 25%;
 }
+
+.tweet-interaccion:first-child {
+  width: 18%;
+}
+
+.tweet-interaccion:nth-child(4){
+  width: auto;
+}
+
+.tweet-interaccion:nth-child(5){
+  width: auto;
+  text-align: right;
+  margin-inline: 10px;
+}
+
+
 
 .tweet-usuario {
   font-size: 14px;
